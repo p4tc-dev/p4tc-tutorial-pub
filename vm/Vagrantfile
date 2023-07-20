@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure(2) do |config|
+    config.vm.box = "bento/ubuntu-22.04"
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.vm.hostname = "p4tc"
+    config.vm.provision "file", source: "p4_16-mode.el", destination: "/home/vagrant/p4_16-mode.el"
+    config.vm.provision "file", source: "p4.vim",        destination: "/home/vagrant/p4.vim"
+    config.vm.provision "file", source: "config-p4tc-x86-ubuntu-22.04", destination: "/home/vagrant/config-p4tc-x86-ubuntu-22.04"
+
+    config.vm.define "release", primary: true do |release|
+        release.vm.provider "virtualbox" do |v|
+          v.name = "P4TC Tutorial VM" + Time.now.strftime(" %Y-%m-%d")
+        end
+        release.vm.provision "shell", path: "root-release-bootstrap.sh"
+        release.vm.provision "shell", path: "root-common-bootstrap.sh"
+        release.vm.provision "shell", privileged: false, path: "user-common-bootstrap.sh"
+    end
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = true
+        vb.memory = 2048
+        vb.cpus = 2
+        vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+        vb.customize [
+          "storageattach", :id,
+          "--storagectl", "IDE Controller",
+          "--port", "0",
+          "--device", "0",
+          "--type", "dvddrive",
+          "--medium", "emptydrive"
+        ]
+        vb.customize ["modifyvm", :id, "--vram", "32"]
+    end
+
+end
