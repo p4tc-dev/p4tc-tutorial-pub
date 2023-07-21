@@ -23,15 +23,8 @@ Vagrant.configure(2) do |config|
         vb.gui = true
         vb.memory = 4096
         vb.cpus = 4
+        config.disksize.size = '80GB'
         vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
-        vb.customize [
-          "storageattach", :id,
-          "--storagectl", "IDE Controller",
-          "--port", "0",
-          "--device", "0",
-          "--type", "dvddrive",
-          "--medium", "emptydrive"
-        ]
         vb.customize ["modifyvm", :id, "--vram", "32"]
     end
 
