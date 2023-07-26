@@ -4,8 +4,6 @@
 set -xe
 
 # --- Tutorial --- #
-#git clone https://github.com/osinstom/p4tc-tutorial
-#sudo mv p4tc-tutorial /home/p4tc
-#sudo chown -R p4tc:p4tc /home/p4tc/p4tc-tutorial
+# TODO: clone p4tc-tutorial repo once public
 
 sudo reboot
