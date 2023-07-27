@@ -22,8 +22,8 @@ make -j`nproc`
 make modules_install && make install
 
 # Download and compile libbpf
-mkdir libs
-cd libs
+mkdir /home/vagrant/libs
+cd /home/vagrant/libs
 git clone https:\//github.com/libbpf/libbpf.git
 cd libbpf/src
 mkdir build root
