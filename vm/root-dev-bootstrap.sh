@@ -11,20 +11,16 @@ apt-get install -qq -y --no-install-recommends --fix-missing \
   ca-certificates curl git net-tools python3 python3-pip tcpdump unzip \
   vim wget make gcc libc6-dev flex bison libelf-dev libssl-dev dpkg-dev build-essential debhelper \
   pkg-config cmake autoconf automake libtool g++ libboost-dev libboost-iostreams-dev libboost-graph-dev \
-  libfl-dev libgc-dev llvm clang gcc-multilib libmnl-dev
+  libfl-dev libgc-dev llvm clang gcc-multilib dwarves libmnl-dev
 
-# Download and install kernel with P4TC support
-mkdir /home/vagrant/kernel
-cd /home/vagrant/kernel
-curl -s https://api.github.com/repos/p4tc-dev/linux-p4tc-pub/releases/latest | \
-	grep "browser_download_url.*deb" | \
-	cut -d : -f 2,3 | \
-  	tr -d \" | \
-	wget -i -
-sudo dpkg -i ./linux-headers-*
-sudo dpkg -i ./linux-libc-*
-sudo dpkg -i ./linux-image-*
-
+# Compile and install kernel with P4TC support
+git clone https://github.com/p4tc-dev/linux-p4tc-pub.git
+cd linux-p4tc-pub/
+cp /home/vagrant/config-p4tc-x86-ubuntu-22.04 .config
+\/home/vagrant/linux-p4tc-pub/scripts/kconfig/merge_config.sh .config \/home/vagrant/linux-p4tc-pub/tools/testing/selftests/tc-testing/config
+make olddefconfig
+make -j`nproc`
+make modules_install && make install
 
 # Download and compile libbpf
 mkdir /home/vagrant/libs
@@ -41,9 +37,16 @@ cd iproute2-p4tc-pub/
 \/home/vagrant/libs/iproute2-p4tc-pub/configure --libbpf_dir \/home/vagrant/libs/libbpf/src/root/
 make && make install
 
-# Download and install protobuf (required by p4c)
-sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-sudo pip3 install protobuf==3.18.1
+# Download and compile protobuf (required by p4c)
+cd /home/vagrant/libs/
+git clone https://github.com/protocolbuffers/protobuf.git
+cd protobuf
+git checkout v3.18.1
+git submodule update --init --recursive
+./autogen.sh
+./configure
+make -j`nproc`
+make install && ldconfig
 
 # Download and compile p4c
 cd /home/vagrant/libs/
