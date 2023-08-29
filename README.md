@@ -67,6 +67,4 @@ You can also use VirtualBox GUI to access VM.
 
 # TO DO
 
-- The "release" VM flavor currently does not work as intended - still testing. For now use only the "dev" flavor.
 - Allow to specify Git commit SHAs in the "dev" VM for linux kernel, iproute2 and p4c. 
-
