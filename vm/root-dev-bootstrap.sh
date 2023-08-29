@@ -48,6 +48,8 @@ git submodule update --init --recursive
 make -j`nproc`
 make install && ldconfig
 
+sudo pip3 install scapy
+
 # Download and compile p4c
 cd /home/vagrant/libs/
 git clone --recursive https://github.com/p4lang/p4c.git

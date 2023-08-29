@@ -44,6 +44,7 @@ make && make install
 # Download and install protobuf (required by p4c)
 sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
 sudo pip3 install protobuf==3.18.1
+sudo pip3 install scapy
 
 # Download and compile p4c
 cd /home/vagrant/libs/
