@@ -32,7 +32,7 @@ To use the "release" flavor, clone this repository and bootstrap the VM.
 The "release" flavor should take about 10-20 minutes to setup. 
 
 ```bash
-git clone https://github.com/p4tc-dev/p4tc-tutorial.git
+git clone https://github.com/p4tc-dev/p4tc-tutorial-pub.git
 cd p4tc-tutorial/vm
 vagrant up 
 ```
@@ -44,7 +44,7 @@ To use the "dev" flavor, clone this repository and bootstrap the VM.
 Be advised that the "dev" flavor will require more time to complete and will take approximately one hour. 
 
 ```bash
-git clone https://github.com/p4tc-dev/p4tc-tutorial.git
+git clone https://github.com/p4tc-dev/p4tc-tutorial-pub.git
 cd p4tc-tutorial/vm
 vagrant up dev
 ```
