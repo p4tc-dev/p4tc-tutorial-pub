@@ -25,7 +25,6 @@ sudo dpkg -i ./linux-headers-*
 sudo dpkg -i ./linux-libc-*
 sudo dpkg -i ./linux-image-*
 
-
 # Download and compile libbpf
 mkdir -p /home/vagrant/libs
 cd /home/vagrant/libs
@@ -41,18 +40,6 @@ cd iproute2-p4tc-pub/
 \/home/vagrant/libs/iproute2-p4tc-pub/configure --libbpf_dir \/home/vagrant/libs/libbpf/src/root/
 make && make install && cp etc/iproute2/p4tc_entities /etc/iproute2 && cp -r etc/iproute2/p4tc_entities.d /etc/iproute2
 
-# Download and install protobuf (required by p4c)
-sudo apt-get purge -y python3-protobuf || echo "Failed to remove python3-protobuf, probably because there was no such package installed"
-sudo pip3 install protobuf==3.18.1
-sudo pip3 install scapy
-
-# Download and compile p4c
-cd /home/vagrant/libs/
-git clone --recursive https://github.com/p4lang/p4c.git
-cd p4c
-git submodule update --init --recursive
-mkdir -p build
-cd build
-cmake .. -DENABLE_P4TC=ON -DENABLE_DPDK=OFF
-make -j`nproc`
-make install
+#get header files for compiling. We should also fix dev and release to have something similar
+wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_kernel.h
+wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_common.h

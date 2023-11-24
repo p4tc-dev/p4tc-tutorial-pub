@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
 
 apt-get install -qq -y --no-install-recommends --fix-missing \
-  ca-certificates curl git net-tools python3 python3-pip tcpdump unzip \
+  ca-certificates curl jq git net-tools python3 python3-pip tcpdump unzip \
   vim wget make gcc libc6-dev flex bison libelf-dev libssl-dev dpkg-dev build-essential debhelper \
   pkg-config cmake autoconf automake libtool g++ libboost-dev libboost-iostreams-dev libboost-graph-dev \
   libfl-dev libgc-dev llvm clang gcc-multilib dwarves libmnl-dev
@@ -23,7 +23,7 @@ make -j`nproc`
 make modules_install && make install
 
 # Download and compile libbpf
-mkdir /home/vagrant/libs
+mkdir -p /home/vagrant/libs
 cd /home/vagrant/libs
 git clone https:\//github.com/libbpf/libbpf.git
 cd libbpf/src
@@ -35,7 +35,7 @@ cd /home/vagrant/libs/
 git clone https:\//github.com/p4tc-dev/iproute2-p4tc-pub
 cd iproute2-p4tc-pub/
 \/home/vagrant/libs/iproute2-p4tc-pub/configure --libbpf_dir \/home/vagrant/libs/libbpf/src/root/
-make && make install
+make && make install && cp etc/iproute2/p4tc_entities /etc/iproute2 && cp -r etc/iproute2/p4tc_entities.d /etc/iproute2
 
 # Download and compile protobuf (required by p4c)
 cd /home/vagrant/libs/
@@ -55,7 +55,7 @@ cd /home/vagrant/libs/
 git clone --recursive https://github.com/p4lang/p4c.git
 cd p4c
 git submodule update --init --recursive
-mkdir build
+mkdir -p build
 cd build
 cmake .. -DENABLE_P4TC=ON -DENABLE_DPDK=OFF
 make -j`nproc`
