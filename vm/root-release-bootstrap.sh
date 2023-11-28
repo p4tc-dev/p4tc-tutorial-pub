@@ -10,7 +10,7 @@ apt-get update -q
 apt-get install -qq -y --no-install-recommends --fix-missing \
   ca-certificates curl git net-tools python3 python3-pip jq tcpdump unzip \
   vim wget make gcc libc6-dev flex bison libelf-dev libssl-dev dpkg-dev build-essential debhelper \
-  pkg-config cmake autoconf automake libtool g++ \
+  pkg-config cmake autoconf automake libtool g++ libboost-dev libboost-iostreams-dev libboost-graph-dev \
   libfl-dev libgc-dev llvm clang gcc-multilib libmnl-dev
 
 # Download and install kernel with P4TC support
