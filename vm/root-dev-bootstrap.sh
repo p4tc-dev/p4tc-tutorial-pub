@@ -16,7 +16,7 @@ apt-get install -qq -y --no-install-recommends --fix-missing \
 # Compile and install kernel with P4TC support
 git clone https://github.com/p4tc-dev/linux-p4tc-pub.git
 cd linux-p4tc-pub/
-cp /home/vagrant/config-p4tc-x86-ubuntu-22.04 .config
+cp ./config-guest-p4tc-x86 .config
 \/home/vagrant/linux-p4tc-pub/scripts/kconfig/merge_config.sh .config \/home/vagrant/linux-p4tc-pub/tools/testing/selftests/tc-testing/config
 make olddefconfig
 make -j`nproc`
