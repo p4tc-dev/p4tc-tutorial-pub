@@ -4,11 +4,13 @@ Welcome to the P4TC tutorial! This repository will help you get started with the
 
 Before you start, [install required software](#required-software). Also, you may want to visit [p4tc.dev](https://www.p4tc.dev/) to learn more about the P4TC project.
 
+<!---
 ## Exercises
 
 TO DO
 
 1. Basics
+-->
 
 ## Required software
 
@@ -83,6 +85,8 @@ vagrant ssh release
 
 You can also use VirtualBox GUI to access VM.
 
+<!---
 # TO DO
 
 - Allow to specify Git commit SHAs in the "dev" VM for linux kernel, iproute2 and p4c. 
+-->
