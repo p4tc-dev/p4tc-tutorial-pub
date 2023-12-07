@@ -43,3 +43,7 @@ make && make install && cp etc/iproute2/p4tc_entities /etc/iproute2 && cp -r etc
 #get header files for compiling. We should also fix dev and release to have something similar
 wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_kernel.h
 wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_common.h
+
+#get examples
+cd /home/vagrant
+git clone https://github.com/p4tc-dev/P4TC-examples-pub.git

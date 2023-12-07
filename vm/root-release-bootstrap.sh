@@ -56,3 +56,7 @@ cd build
 cmake .. -DENABLE_P4TC=ON -DENABLE_DPDK=OFF
 make -j`nproc`
 make install
+
+#get examples
+cd /home/vagrant
+git clone https://github.com/p4tc-dev/P4TC-examples-pub.git
