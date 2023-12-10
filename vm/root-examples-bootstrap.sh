@@ -47,3 +47,6 @@ wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/
 #get examples
 cd /home/vagrant
 git clone https://github.com/p4tc-dev/P4TC-examples-pub.git
+
+#running depmod
+depmod -a
