@@ -48,5 +48,9 @@ wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/
 cd /home/vagrant
 git clone https://github.com/p4tc-dev/P4TC-examples-pub.git
 
+#get sendpacket
+cd /home/vagrant
+git clone https://github.com/ebiken/sendpacket
+
 #running depmod
 depmod -a
