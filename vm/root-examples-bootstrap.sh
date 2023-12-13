@@ -46,7 +46,7 @@ wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/
 
 #get examples
 cd /home/vagrant
-git clone https://github.com/p4tc-dev/P4TC-examples-pub.git
+git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
 #get sendpacket
 cd /home/vagrant
