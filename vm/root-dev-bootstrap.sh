@@ -63,7 +63,7 @@ make install
 
 #get examples
 cd /home/vagrant
-git clone https://github.com/p4tc-dev/P4TC-examples-pub.git
+git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
 #running depmod
 depmod -a
