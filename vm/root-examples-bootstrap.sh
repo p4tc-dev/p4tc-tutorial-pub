@@ -50,6 +50,7 @@ git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
 #get sendpacket
 cd /home/vagrant
+sudo pip3 install scapy
 git clone https://github.com/ebiken/sendpacket
 
 #running depmod
