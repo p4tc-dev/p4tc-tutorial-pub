@@ -23,9 +23,13 @@ You also need to install the following Vagrant plugin:
 ```bash
 vagrant plugin install vagrant-disksize
 vagrant plugin install vagrant-reload
+vagrant plugin install vagrant-vbguest
+vagrant plugin install vagrant-scp
 ```
 
-There are currently three flavors of the VM.
+There is currently one flavor of the VM. 
+
+In the future we will support additional flavors.
 
 ### Examples flavor
 The "examples" flavor will download and install every part of the p4tc infrastructure that is compiled as a .deb file and compile and install libbpf and iproute2. The examples flavor is the default.
@@ -40,6 +44,7 @@ cd p4tc-tutorial/vm
 vagrant up 
 ```
 
+<!---
 ### Release flavor
 The "release" flavor that will download and install every part of the p4tc infrastructure that is compiled as a .deb file and compile and install the rest along with the p4c.
 The "release" flavor is intendend for most users that want to compile new p4 programs into p4c and test them.
@@ -66,7 +71,9 @@ cd p4tc-tutorial/vm
 vagrant up dev
 ```
 
-All flavors will install all the required software per flavor, including the Linux kernel with P4TC support and iproute2 along with downloading this repository to the VM under `/home/p4tc/p4tc-tutorial`.
+-->
+
+All flavors will install all the required software per flavor along with downloading this repository to the VM under `/home/p4tc/p4tc-tutorial-pub`.
 At the end of script's execution, the VM will be rebooted to apply the new configuration. You might need to wait a few minutes before you will be able to log in to the VM. Once the VM is ready, you can SSH to it with:
 
 ```bash
@@ -80,7 +87,7 @@ vagrant ssh `flavor`
 ```
 e.g.:
 ```bash
-vagrant ssh release
+vagrant ssh examples
 ```
 
 You can also use VirtualBox GUI to access VM.
