@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
       end
 
     config.vm.box = "bento/ubuntu-22.04"
-    config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.vm.synced_folder '.', '/vagrant'
     config.vm.hostname = "p4tc"
     config.vm.provision "file", source: "p4_16-mode.el", destination: "/home/vagrant/p4_16-mode.el"
     config.vm.provision "file", source: "p4.vim",        destination: "/home/vagrant/p4.vim"
@@ -29,30 +29,31 @@ Vagrant.configure(2) do |config|
         examples.vm.provision "shell", path: "root-common-bootstrap.sh"
     end
 
-    config.vm.define "release", autostart: false do |release|
-        release.vm.provider "virtualbox" do |v|
-            v.name = "P4TC Tutorial Release VM" + Time.now.strftime(" %Y-%m-%d")
-        end
-        release.vm.provision "file", source: "root-release-update.sh",        destination: "/home/vagrant/root-release-update.sh"
-        release.vm.provision "shell", path: "root-release-bootstrap.sh"
-        release.vm.provision :reload
-        release.vm.provision "shell", privileged: false, path: "user-common-bootstrap.sh"
-        release.vm.provision "shell", path: "root-common-bootstrap.sh"
-    end
-
-    config.vm.define "dev", autostart: false do |dev|
-        dev.vm.provider "virtualbox" do |v|
-            v.name = "P4TC Tutorial Development VM" + Time.now.strftime(" %Y-%m-%d")
-            config.disksize.size = '120GB'
-        end
-        dev.vm.provision "file", source: "root-dev-update.sh",        destination: "/home/vagrant/root-dev-update.sh"
-        dev.vm.provision "shell", path: "root-common-resize-disk.sh"
-        dev.vm.provision "shell", path: "root-dev-bootstrap.sh"
-        dev.vm.provision :reload
-        dev.vm.provision "shell", privileged: false, path: "user-common-bootstrap.sh"
-        dev.vm.provision "shell", path: "root-common-bootstrap.sh"
-    end
-
+##
+#    config.vm.define "release", autostart: false do |release|
+#        release.vm.provider "virtualbox" do |v|
+#            v.name = "P4TC Tutorial Release VM" + Time.now.strftime(" %Y-%m-%d")
+#        end
+#        release.vm.provision "file", source: "root-release-update.sh",        destination: "/home/vagrant/root-release-update.sh"
+#        release.vm.provision "shell", path: "root-release-bootstrap.sh"
+#        release.vm.provision :reload
+#        release.vm.provision "shell", privileged: false, path: "user-common-bootstrap.sh"
+#        release.vm.provision "shell", path: "root-common-bootstrap.sh"
+#    end
+#
+#    config.vm.define "dev", autostart: false do |dev|
+#        dev.vm.provider "virtualbox" do |v|
+#            v.name = "P4TC Tutorial Development VM" + Time.now.strftime(" %Y-%m-%d")
+#            config.disksize.size = '120GB'
+#        end
+#        dev.vm.provision "file", source: "root-dev-update.sh",        destination: "/home/vagrant/root-dev-update.sh"
+#        dev.vm.provision "shell", path: "root-common-resize-disk.sh"
+#        dev.vm.provision "shell", path: "root-dev-bootstrap.sh"
+#        dev.vm.provision :reload
+#        dev.vm.provision "shell", privileged: false, path: "user-common-bootstrap.sh"
+#        dev.vm.provision "shell", path: "root-common-bootstrap.sh"
+#    end
+##
     config.vm.provider "virtualbox" do |vb|
         #vb.gui = true
         vb.memory = 8092

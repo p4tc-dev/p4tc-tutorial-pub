@@ -65,5 +65,9 @@ make install
 cd /home/vagrant
 git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
+#get sendpacket
+cd /home/vagrant
+git clone https://github.com/ebiken/sendpacket
+
 #running depmod
 depmod -a
