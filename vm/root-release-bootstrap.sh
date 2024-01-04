@@ -25,7 +25,6 @@ sudo dpkg -i ./linux-headers-*
 sudo dpkg -i ./linux-libc-*
 sudo dpkg -i ./linux-image-*
 
-
 # Download and compile libbpf
 mkdir -p /home/vagrant/libs
 cd /home/vagrant/libs
@@ -33,6 +32,10 @@ git clone https:\//github.com/libbpf/libbpf.git
 cd libbpf/src
 mkdir build root
 BUILD_STATIC_ONLY=y OBJDIR=build DESTDIR=root make install
+
+#get header files for compiling.
+wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_kernel.h
+wget -P /home/vagrant/libs/include https://raw.githubusercontent.com/p4lang/p4c/main/backends/ebpf/runtime/ebpf_common.h
 
 # Download and compile iproute2
 cd /home/vagrant/libs/
