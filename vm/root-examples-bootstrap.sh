@@ -8,10 +8,11 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
 
 apt-get install -qq -y --no-install-recommends --fix-missing \
-  ca-certificates curl git net-tools python3 python3-pip jq tcpdump unzip \
+  ca-certificates curl git net-tools python3 python3-pip python3-scapy jq tcpdump unzip \
   vim wget make gcc libc6-dev flex bison libelf-dev libssl-dev dpkg-dev build-essential debhelper \
   pkg-config cmake autoconf automake libtool g++ \
-  libfl-dev libgc-dev gcc-multilib libmnl-dev
+  libfl-dev libgc-dev gcc-multilib libmnl-dev netcat-openbsd lsb-release wget \
+  software-properties-common gnupg
 
 # Download and install kernel with P4TC support
 mkdir -p /home/vagrant/kernel
@@ -78,7 +79,6 @@ git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
 #get sendpacket
 cd /home/vagrant
-sudo pip3 install scapy
 git clone https://github.com/ebiken/sendpacket
 
 #running depmod
