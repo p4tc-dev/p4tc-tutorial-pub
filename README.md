@@ -77,7 +77,7 @@ All flavors will install all the required software per flavor along with downloa
 At the end of script's execution, the VM will be rebooted to apply the new configuration. You might need to wait a few minutes before you will be able to log in to the VM. Once the VM is ready, you can SSH to it with:
 
 ```bash
-ssh -p 2222 p4tc@127.0.0.1
+ssh -p 2222 vagrant@127.0.0.1
 # password: p4tc
 ```
 
