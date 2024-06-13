@@ -23,7 +23,6 @@ You also need to install the following Vagrant plugin:
 ```bash
 vagrant plugin install vagrant-disksize
 vagrant plugin install vagrant-reload
-vagrant plugin install vagrant-vbguest
 vagrant plugin install vagrant-scp
 ```
 
