@@ -39,7 +39,7 @@ The "examples" flavor should take about 10-20 minutes to setup.
 
 ```bash
 git clone https://github.com/p4tc-dev/p4tc-tutorial-pub.git
-cd p4tc-tutorial/vm
+cd p4tc-tutorial-pub/vm
 vagrant up 
 ```
 
