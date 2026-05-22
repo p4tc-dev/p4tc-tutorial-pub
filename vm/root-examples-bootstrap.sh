@@ -13,17 +13,11 @@ apt-get install -qq -y --no-install-recommends --fix-missing \
   pkg-config cmake autoconf automake libtool g++ \
   libfl-dev libgc-dev gcc-multilib libmnl-dev
 
-# Download and install kernel with P4TC support
-mkdir -p /home/vagrant/kernel
-cd /home/vagrant/kernel
-curl -s https://api.github.com/repos/p4tc-dev/linux-p4tc-pub/releases/latest | \
-	grep "browser_download_url.*deb" | \
-	cut -d : -f 2,3 | \
-  	tr -d \" | \
-	wget -i -
+pushd /home/vagrant/
 sudo dpkg -i ./linux-headers-*
 sudo dpkg -i ./linux-libc-*
 sudo dpkg -i ./linux-image-*
+popd
 
 wget https://apt.llvm.org/llvm.sh
 chmod u+x llvm.sh
@@ -78,7 +72,7 @@ git clone https://github.com/p4tc-dev/p4tc-examples-pub.git
 
 #get sendpacket
 cd /home/vagrant
-sudo pip3 install scapy
+apt-get install python3-scapy -qq -y
 git clone https://github.com/ebiken/sendpacket
 
 # Update and install Docker if not present
@@ -105,6 +99,10 @@ EOF
 chmod +x /usr/local/bin/p4c-pna-p4tc
 
 chown vagrant:vagrant -R p4tc-examples-pub
+
+pushd /home/vagrant/
+sudo dpkg -i p4tc-ctrl-runt-api_0.1.0_amd64.deb
+popd
 
 #running depmod
 depmod -a

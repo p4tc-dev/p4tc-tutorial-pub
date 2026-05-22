@@ -10,14 +10,18 @@ Vagrant.configure(2) do |config|
         raise  Vagrant::Errors::VagrantError.new, "vagrant-reload plugin is missing. Please install it using 'vagrant plugin install vagrant-reload' and rerun 'vagrant up'"
       end
 
-    config.vm.box = "bento/ubuntu-22.04"
+    config.vm.box = "bento/ubuntu-24.04"
     config.vm.synced_folder '.', '/vagrant'
     config.vm.hostname = "p4tc"
     config.vm.provision "file", source: "p4_16-mode.el", destination: "/home/vagrant/p4_16-mode.el"
     config.vm.provision "file", source: "p4.vim",        destination: "/home/vagrant/p4.vim"
-    config.vm.provision "file", source: "config-p4tc-x86-ubuntu-22.04", destination: "/home/vagrant/config-p4tc-x86-ubuntu-22.04"
+    config.vm.provision "file", source: "linux-headers-6.14.0p4tc-v17-rc9+_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb", destination: "/home/vagrant/linux-headers-6.14.0p4tc-v17-rc9+_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb"
+    config.vm.provision "file", source: "linux-image-6.14.0p4tc-v17-rc9+_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb", destination: "/home/vagrant/linux-image-6.14.0p4tc-v17-rc9+_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb"
+    config.vm.provision "file", source: "linux-libc-dev_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb", destination: "/home/vagrant/linux-libc-dev_6.14.0p4tc-v17-rc9-g53ea422d68a4-578_amd64.deb"
+    config.vm.provision "file", source: "p4tc-ctrl-runt-api_0.1.0_amd64.deb", destination: "/home/vagrant/p4tc-ctrl-runt-api_0.1.0_amd64.deb"
 # for now - until we can retrieve this header from remote
     config.vm.provision "file", source: "pna.h", destination: "/home/vagrant/libs/include/"
+    config.vm.provision "file", source: "redirect_l2", destination: "/home/vagrant/redirect_l2"
 
     config.vm.define "examples", primary: true do |examples|
         examples.vm.provider "virtualbox" do |v|
