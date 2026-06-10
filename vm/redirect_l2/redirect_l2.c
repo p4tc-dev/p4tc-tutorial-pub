@@ -34,7 +34,7 @@ static int p4tc_create_entry(struct p4tc_runt_ctx *runt_ctx,
 		return -1;
 
 	p4tc_obj_objname_set(runtime_obj, table_path);
-	tbl_key = p4tc_make_key(runtime_obj, key_str);
+	tbl_key = p4tc_make_key(runtime_obj, 1, (const char *[]){ key_str });
 	if (!tbl_key) {
 		fprintf(stderr, "Error: Could not create key for %s in %s\n",
 			key_str, table_path);
@@ -47,8 +47,8 @@ static int p4tc_create_entry(struct p4tc_runt_ctx *runt_ctx,
 		goto obj_cleanup;
 	}
 
-	act_attrs = p4tc_create_runt_act(entry_attrs, act->action_path,
-					 act->dev, act->dmac, act->smac);
+	act_attrs = p4tc_create_runt_act(entry_attrs, act->action_path, 3,
+					 (const char *[]){ act->dev, act->dmac, act->smac });
 	if (!act_attrs) {
 		fprintf(stderr, "Error: Could not create action %s\n",
 			act->action_path);
@@ -82,7 +82,7 @@ static int p4tc_update_entry(struct p4tc_runt_ctx *runt_ctx, const char *pipe_na
 		return -1;
 
 	p4tc_obj_objname_set(runtime_obj, table_path);
-	tbl_key = p4tc_make_key(runtime_obj, key_str);
+	tbl_key = p4tc_make_key(runtime_obj, 1, (const char *[]){ key_str });
 	if (!tbl_key) {
 		fprintf(stderr, "Error: Could not create key for %s in %s\n",
 			key_str, table_path);
@@ -95,8 +95,8 @@ entry_attrs = p4tc_alloc_tbl_entry(runtime_obj,
 		goto obj_cleanup;
 	}
 
-	act_attrs = p4tc_create_runt_act(entry_attrs, act->action_path,
-					 act->dev, act->dmac, act->smac);
+	act_attrs = p4tc_create_runt_act(entry_attrs, act->action_path, 3,
+					 (const char *[]){ act->dev, act->dmac, act->smac });
 	if (!act_attrs) {
 		fprintf(stderr, "Error: Could not create action %s\n",
 			act->action_path);
@@ -130,7 +130,7 @@ static int p4tc_read_table(struct p4tc_runt_ctx *runt_ctx,
 
 	if (key_str) {
 		p4tc_obj_objname_set(runtime_obj, table_path);
-		tbl_key = p4tc_make_key(runtime_obj, key_str);
+		tbl_key = p4tc_make_key(runtime_obj, 1, (const char *[]){ key_str });
 		if (!tbl_key)
 			goto obj_cleanup;
 
@@ -173,7 +173,7 @@ static int p4tc_delete_table(struct p4tc_runt_ctx *runt_ctx,
 
 	if (key_str) {
 		p4tc_obj_objname_set(runtime_obj, table_path);
-		tbl_key = p4tc_make_key(runtime_obj, key_str);
+		tbl_key = p4tc_make_key(runtime_obj, 1, (const char *[]){ key_str });
 		if (!tbl_key)
 			goto obj_cleanup;
 
