@@ -16,6 +16,100 @@ struct action_params {
 };
 
 /**
+ * Print a byte blob as a hex string (big-endian, as stored).
+ */
+static void print_hex(const __u8 *data, __u32 len)
+{
+	if (!data || !len) {
+		printf("(none)");
+		return;
+	}
+
+	printf("0x");
+	for (__u32 i = 0; i < len; i++)
+		printf("%02x", data[i]);
+}
+
+/**
+ * Custom response callback.
+ *
+ * Instead of relying on the library's default dump callback, this walks the
+ * response object with the p4tc_obj accessor API (table entries -> actions ->
+ * parameters) and prints the fields itself.
+ *
+ * The callback is invoked once per transaction phase: SOT for the first
+ * (matching) entry, MOT for subsequent entries in a dump, EOT on successful
+ * completion, and ABT on error (e.g. entry not found). Only SOT/MOT carry a
+ * populated object.
+ */
+static int redirect_l2_print_cb(const struct p4tc_obj *p4tc_obj,
+				struct p4tc_runt_ctx *ctx, __u64 *cookie,
+				enum p4tc_trans_phase trans_phase)
+{
+	struct p4tc_runt_tbl_attrs *entry;
+
+	(void)ctx;
+	(void)cookie;
+
+	switch (trans_phase) {
+	case P4TC_PHASE_ABT:
+		printf("  [cb] aborted (entry not found or error)\n");
+		return 0;
+	case P4TC_PHASE_EOT:
+		printf("  [cb] end of transaction\n");
+		return 0;
+	default:
+		break;
+	}
+
+	if (!p4tc_obj)
+		return 0;
+
+	printf("  [cb] %s (pipeline %s):\n", p4tc_obj_objname_get(p4tc_obj),
+	       p4tc_obj_pname_get(p4tc_obj));
+
+	for (entry = p4tc_obj_tbl_entry_first(p4tc_obj); entry;
+	     entry = p4tc_obj_tbl_entry_next(p4tc_obj, entry)) {
+		struct p4tc_runt_act_attrs *act;
+		const __u8 *key;
+		__u32 keysz = 0;
+
+		key = p4tc_runt_tbl_attrs_key_get(entry, &keysz);
+		printf("    table %s  prio %u  key ",
+		       p4tc_runt_tbl_attrs_name_get(entry),
+		       p4tc_runt_tbl_attrs_prio_get(entry));
+		print_hex(key, keysz);
+		printf("\n");
+
+		for (act = p4tc_runt_tbl_attrs_act_first(entry); act;
+		     act = p4tc_runt_tbl_attrs_act_next(entry, act)) {
+			struct p4tc_runt_param_attrs *param;
+
+			printf("      action %s (index %u, %u params)\n",
+			       p4tc_runt_act_attrs_name_get(act),
+			       p4tc_runt_act_attrs_index_get(act),
+			       p4tc_runt_act_attrs_num_params_get(act));
+
+			for (param = p4tc_runt_act_attrs_param_first(act); param;
+			     param = p4tc_runt_act_attrs_param_next(act, param)) {
+				const __u8 *val;
+				__u32 valsz = 0;
+
+				val = p4tc_runt_param_attrs_value_get(param,
+								      &valsz);
+				printf("        param %s  type %s  value ",
+				       p4tc_runt_param_attrs_name_get(param),
+				       p4tc_runt_param_attrs_type_name_get(param));
+				print_hex(val, valsz);
+				printf("\n");
+			}
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Generic function to create a table entry.
  */
 static int p4tc_create_entry(struct p4tc_runt_ctx *runt_ctx,
@@ -147,7 +241,7 @@ static int p4tc_read_table(struct p4tc_runt_ctx *runt_ctx,
 		printf("\n--- Dumping Table: %s ---\n", table_path);
 	}
 
-	ret = p4tc_get(runt_ctx, runtime_obj, 0, NULL, NULL);
+	ret = p4tc_get(runt_ctx, runtime_obj, 0, redirect_l2_print_cb, NULL);
 
 obj_cleanup:
 	p4tc_obj_destroy(runtime_obj);
@@ -212,11 +306,11 @@ int main(int argc, char **argv)
 		const char *ip; const char *dev; const char *dmac;
 		const char *smac;
 	} entries[] = {
-		{"192.168.1.10", "port0", "00:AA:BB:CC:DD:EE",
+		{"192.168.1.10", "lo", "00:AA:BB:CC:DD:EE",
 		 "00:11:22:33:44:55"},
-		{"10.0.0.5",     "port0", "00:22:33:44:55:66",
+		{"10.0.0.5",     "lo", "00:22:33:44:55:66",
 		 "00:AA:BB:CC:DD:FF"},
-		{"172.16.0.100", "port0", "00:DE:AD:BE:EF:00",
+		{"172.16.0.100", "lo", "00:DE:AD:BE:EF:00",
 		 "00:CA:FE:BA:BE:01"}
 	};
 
@@ -255,7 +349,7 @@ int main(int argc, char **argv)
 	printf("\n>>> Targeted Update: 10.0.0.5 <<<\n");
 	struct action_params updated_act = {
 		.action_path = aname,
-		.dev = "port0",
+		.dev = "lo",
 		.dmac = "FF:FF:FF:FF:FF:FF",
 		.smac = "00:00:00:00:00:00"
 	};
